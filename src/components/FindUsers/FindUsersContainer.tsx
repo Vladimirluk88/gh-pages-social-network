@@ -1,62 +1,44 @@
-import { connect } from 'react-redux';
-import { actions, getUsersThunkCreator, follow, unfollow, findUser, resetFind } from '../../redux/users-reducer';
-import React from 'react';
+import {  useDispatch, useSelector } from 'react-redux';
+import {  getUsersThunkCreator, follow, unfollow, findUser, resetFind } from '../../redux/users-reducer';
+import React, { useEffect } from 'react';
 import { FindUsers } from './FindUsers';
 import { Preloader } from '../common/preloader';
-import { withAuthRedirect } from "../../hoc/withAuthRedirect";
-import { compose } from "redux";
-import { getIsFetching, getUsersArraySuper, getIsFollowingInProgress } from "../../redux/users-selectors";
-import { UserType } from '../../types/types';
-
-type MapStateToPropsType = {
-    isFollowingInProgress: Array<number>,
-    usersArray: Array<UserType>,
-    isFetching: boolean
-}
-
-type MapDispatchToPropsType = {
-    getUsersThunkCreator: () => void,
-    showMore: () => void,
-    follow: (userId: number) => void,
-    unfollow: (userId: number) => void,
-    findUser: (term: string, friend: null | "true" | "false" | "null") => void,
-    resetFind: () => void
-}
+import { getIsFetching } from "../../redux/users-selectors";
 
 type OwnPropsType = {
-    PageTitle: string
+    PageTitle?: string
 }
 
-type PropsType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType;
 
-class FindUsersAPIComponent extends React.Component<PropsType> {
-    componentDidMount() {
-        this.props.getUsersThunkCreator();
+const FindUsersPage: React.FC<OwnPropsType> = (props) => {
+    const dispatch = useDispatch();
+    useEffect(()=> {
+        dispatch(getUsersThunkCreator());
+    }, []);
+
+    let isFetching = useSelector(getIsFetching);
+    const internalFollow = (userId: number) => {
+        dispatch(follow(userId))
     }
-    render() {
-        return (
-            <div>
-            {this.props.isFetching ? <Preloader /> : null}
+    const internalUnfollow = (userId: number) => {
+        dispatch(unfollow(userId))
+    }
+    const internalFindUser = (term: string, friend: null | "true" | "false" | "null") => {
+        dispatch(findUser(term, friend))
+    }
+    const internalResetFind = () => {
+        dispatch(resetFind())
+    }
+    return (
+        <div>
+            {isFetching ? <Preloader /> : null}
             <FindUsers
-                usersArray={this.props.usersArray}
-                showMore={this.props.showMore}
-                isFollowingInProgress={this.props.isFollowingInProgress}
-                follow={this.props.follow}
-                unfollow={this.props.unfollow}
-                findUser={this.props.findUser}
-                resetFind={this.props.resetFind} />
+                follow={internalFollow}
+                unfollow={internalUnfollow}
+                findUser={internalFindUser}
+                resetFind={internalResetFind} />
         </div>
-        )
-    }
+    )
 }
 
-let mapStateToProps = (state: any): MapStateToPropsType => {
-    let usersArray: Array<UserType> = getUsersArraySuper(state);
-    return {
-        isFollowingInProgress: getIsFollowingInProgress(state),
-        usersArray,
-        isFetching: getIsFetching(state)
-    }
-}
-
-export default compose(connect<MapStateToPropsType, MapDispatchToPropsType>(mapStateToProps, { showMore: actions.showMore, getUsersThunkCreator, follow, unfollow, findUser, resetFind }), withAuthRedirect)(FindUsersAPIComponent) as React.ComponentType<any>;
+export default FindUsersPage;
