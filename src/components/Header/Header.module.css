@@ -1,0 +1,15 @@
+.header {
+  max-height: 100px;
+  width: 100%;
+  background-color: #aaa;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header img {
+  max-width: 50px;
+}
+
+.login_block {
+
+}

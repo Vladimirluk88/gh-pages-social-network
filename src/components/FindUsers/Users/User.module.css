@@ -1,0 +1,21 @@
+.find_users_user {
+    display: flex;
+}
+.find_users_user_image img {
+    max-width: 50px;
+}
+.find_users_user_info {
+    font-weight: 20px;
+    padding: 10px;
+}
+.find_users_user_buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.find_users_btn_add_remove {
+    border: none;
+    background-color: rgb(115, 233, 131);
+}

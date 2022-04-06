@@ -1,0 +1,25 @@
+.dialogs_content {
+    display: flex;
+    
+}
+
+.dialogs_items {
+    flex: 0 1 30%;
+
+}
+
+.dialogs_item {
+    padding: 5px;
+}
+
+.dialogs_item_active {
+    color: gold;
+}
+
+.dialog_messages {
+    flex: 1 0 60%;
+}
+
+.dialog_message_item {
+    padding: 10px;
+}

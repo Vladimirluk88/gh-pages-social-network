@@ -1,0 +1,27 @@
+.info_about_user__avatar {
+    max-width: 150px;
+  }
+
+  .info_about_user {
+  }
+  .user_avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+.user_avatar img {
+  padding-bottom: 10px;
+}
+.user_status {
+  cursor: pointer;
+  display: flex;
+}
+.user_status_text {
+  cursor: text;
+  margin-right: 10px;
+}
+  .avatar_name_user {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }

@@ -1,0 +1,10 @@
+.find_users_wrapper {
+    background-color: white;
+}
+.find_users_item {
+    background-color: rgb(146, 235, 143);
+}
+.find_users_show_more {
+    border: 2px rgb(41, 41, 41);
+    background-color: white;
+}
