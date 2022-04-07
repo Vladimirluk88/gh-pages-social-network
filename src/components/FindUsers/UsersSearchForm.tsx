@@ -45,7 +45,7 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
         return (
             <div>
                 <Formik
-                    initialValues={{ search: "", friend: null }}
+                    initialValues={{ search: "", friend: "null" }}
                     validate={userSearchFormValidate}
                     onSubmit={submit}
                 >

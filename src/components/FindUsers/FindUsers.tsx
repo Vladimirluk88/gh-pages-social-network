@@ -5,8 +5,7 @@ import { UserSearchForm } from "./UsersSearchForm";
 // eslint-disable-next-line
 import { useSelector } from "react-redux";
 // eslint-disable-next-line
-import {
-    getIsFetching,
+import {getIsFetching,
     getIsFollowingInProgress,
     getUsersArraySuper,
 } from "../../redux/users-selectors";

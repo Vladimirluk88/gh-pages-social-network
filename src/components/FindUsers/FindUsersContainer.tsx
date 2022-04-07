@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { FindUsers } from './FindUsers';
 import { Preloader } from '../common/preloader';
 import { getIsFetching } from "../../redux/users-selectors";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 
 type OwnPropsType = {
     PageTitle?: string
@@ -12,9 +13,10 @@ type OwnPropsType = {
 
 const FindUsersPage: React.FC<OwnPropsType> = (props) => {
     const dispatch = useDispatch();
+
     useEffect(()=> {
         dispatch(getUsersThunkCreator());
-    }, []);
+    }, [dispatch]);
 
     let isFetching = useSelector(getIsFetching);
     const internalFollow = (userId: number) => {
@@ -41,4 +43,4 @@ const FindUsersPage: React.FC<OwnPropsType> = (props) => {
     )
 }
 
-export default FindUsersPage;
+export default withAuthRedirect(FindUsersPage);
