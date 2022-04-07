@@ -9,10 +9,11 @@ type UserSearchFormObjectType = {
 type UserSearchFormProps = {
     findUser: (term: string, friend: null | "true" | "false" | "null") => void;
     resetFind: () => void;
+    setFilter: (term: string, friend: null | "true" | "false" | "null") => void
 };
 
 export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
-    ({ findUser, resetFind }) => {
+    ({ findUser, resetFind, setFilter }) => {
         let [isUsersFromFind, showFindUsers] = useState(false);
 
         const userSearchFormValidate = (values: UserSearchFormObjectType) => {
@@ -21,6 +22,7 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
                 if (isUsersFromFind) {
                     showFindUsers(false);
                     resetFind();
+                    setFilter("", null);
                 } else {
                     if(!values.friend){
                     // @ts-ignore
@@ -38,6 +40,7 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
             }: { setSubmitting: (isSubmitting: boolean) => void }
         ) => {
             findUser(values.search, values.friend);
+            setFilter(values.search, values.friend);
             setSubmitting(false);
             showFindUsers(true);
         };

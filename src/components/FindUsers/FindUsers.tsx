@@ -10,27 +10,27 @@ import {getIsFetching,
     getUsersArraySuper,
 } from "../../redux/users-selectors";
 
-type MapStatePropsType = { };
-
 type MapDispatchPropsType = {
     follow: (userId: number) => void;
     unfollow: (userId: number) => void;
     findUser: (term: string, friend: null | "true" | "false" | "null") => void;
     resetFind: () => void;
+    setFilter: (term: string, friend: null | "true" | "false" | "null") => void
 };
 
-let FindUsers: React.FC<MapStatePropsType & MapDispatchPropsType> = ({
+let FindUsers: React.FC<{} & MapDispatchPropsType> = ({
     follow,
     unfollow,
     findUser,
     resetFind,
+    setFilter
 }) => {
     // eslint-disable-next-line
     const usersArray = useSelector(getUsersArraySuper);
     const isFollowingInProgress = useSelector(getIsFollowingInProgress);
     return (
         <div className={styles.find_users_wrapper}>
-            <UserSearchForm findUser={findUser} resetFind={resetFind} />
+            <UserSearchForm findUser={findUser} resetFind={resetFind} setFilter={setFilter} />
             <div className={styles.find_users_items}>
                 <div className={styles.find_users_item}>
                     {usersArray.map((e) => {

@@ -13,6 +13,7 @@ let initialState = {
     UsersData: [] as Array<UserType>,
     isFetching: true,
     isFollowingInProgress: [] as Array<number>,
+    filter: { term: "" as null | string, friend: null as null | "true" | "false" | "null" },
 };
 
 let getUsersThunkCreator = (): UsersThunkType => {
@@ -56,12 +57,16 @@ let unfollow = (userId: number): UsersThunkType => {
         );
     };
 };
-let findUser = (term: string, friend: null | "true" | "false" | "null" = null): UsersThunkType => {
+let findUser = (
+    term: string,
+    friend: null | "true" | "false" | "null" = null
+): UsersThunkType => {
     return async (dispatch) => {
         let friendBool = null;
-        if(friend === "null") {
-            friendBool = null
-        } else if(friend != null) friendBool = (friend === "true");
+        if (friend === "null") {
+            friendBool = null;
+        } else if (friend != null) friendBool = friend === "true";
+        dispatch(actions.setFilter(term, friend));
         dispatch(actions.toggleFetching(true));
         let data = await usersAPI.findUser(term, friendBool);
         dispatch(actions.toggleFetching(false));
@@ -74,8 +79,8 @@ let resetFind = (): UsersThunkType => {
         let data = await usersAPI.getUsers();
         dispatch(actions.toggleFetching(false));
         dispatch(actions.setUsers(data.items, true));
-    }
-}
+    };
+};
 
 export const actions = {
     showMore: () => ({ type: "SHOW_MORE" } as const),
@@ -94,6 +99,10 @@ export const actions = {
             userId,
             isFetching,
         } as const),
+    setFilter: (
+        term: string,
+        friend: null | "true" | "false" | "null" = null
+    ) => ({ type: "SET_FILTER", filter: { term, friend } as const } as const),
 };
 
 let userReducer = (
@@ -126,8 +135,8 @@ let userReducer = (
             } else if (action.reset) {
                 return {
                     ...state,
-                    UsersData: [...action.users]
-                }
+                    UsersData: [...action.users],
+                };
             } else {
                 return state;
             }
@@ -160,9 +169,22 @@ let userReducer = (
                 ),
             };
         }
+        case "SET_FILTER": {
+            return {
+                ...state,
+                filter: { ...action.filter },
+            };
+        }
         default:
             return state;
     }
 };
 
-export { userReducer, getUsersThunkCreator, follow, unfollow, findUser, resetFind };
+export {
+    userReducer,
+    getUsersThunkCreator,
+    follow,
+    unfollow,
+    findUser,
+    resetFind,
+};

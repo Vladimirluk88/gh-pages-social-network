@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import SamuraiJSApp from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-
-//window.store = store;
+import { store } from './redux/redux-store';
+// @ts-ignore
+window.store = store;
 
 ReactDOM.render(
     <React.StrictMode>
