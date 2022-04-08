@@ -1,33 +1,76 @@
-import {  useDispatch, useSelector } from 'react-redux';
-import {  getUsersThunkCreator, follow, unfollow, findUser, resetFind, actions } from '../../redux/users-reducer';
-import React, { useEffect } from 'react';
-import { FindUsers } from './FindUsers';
-import { Preloader } from '../common/preloader';
+import { useDispatch, useSelector } from "react-redux";
+import {
+    getUsersThunkCreator,
+    follow,
+    unfollow,
+    resetFind,
+    actions
+} from "../../redux/users-reducer";
+import React, { useCallback, useEffect } from "react";
+import { FindUsers } from "./FindUsers";
+import { Preloader } from "../common/preloader";
 import { getIsFetching } from "../../redux/users-selectors";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
-import { AppStateType } from '../../redux/redux-store';
+import { AppStateType } from "../../redux/redux-store";
 import { useHistory } from "react-router-dom";
+import { FriendFormType } from "./UsersSearchForm";
 
 type OwnPropsType = {
-    PageTitle?: string
-}
-
+    PageTitle?: string;
+};
 
 const FindUsersPage: React.FC<OwnPropsType> = (props) => {
     const dispatch = useDispatch();
-
-    useEffect(()=> {
-        dispatch(getUsersThunkCreator());
-    }, [dispatch]);
-
-    const filter = useSelector((state: AppStateType) => state.UserPageData.filter);
-
     const history = useHistory();
 
-    /*
+    const filter = useSelector(
+        (state: AppStateType) => state.UserPageData.filter
+    );
+    let isFetching = useSelector(getIsFetching);
+
+    const internalSetFilter = useCallback((
+        term: string | null,
+        friend: FriendFormType = null
+    ) => {
+        dispatch(actions.setFilter(term, boolFriend(friend)));
+    }, [dispatch])
+
+    const boolFriend = (friend: string | null) => {
+        if(friend !== null) {
+            if(friend === "null") {
+                return null
+            } else return (friend === "true")
+        }
+        if(friend === null || friend === undefined) return null
+    };
+
+    const internalFollow = (userId: number) => {
+        dispatch(follow(userId));
+    };
+    const internalUnfollow = (userId: number) => {
+        dispatch(unfollow(userId));
+    };
+    const internalResetFind = () => {
+        dispatch(resetFind());
+    };
+
+    useEffect(() => {
+        dispatch(getUsersThunkCreator());
+    }, [filter, dispatch]);
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const term: string | null = urlParams.get("term");
+        let friend = urlParams.get("friend");
+        if(term !== null || friend !== null) {
+            // @ts-ignore
+            internalSetFilter(term, friend);
+        }
+    }, [internalSetFilter]);
+
     useEffect(() => {
         if(filter.term !== "") {
-            if(filter.friend === null || filter.friend === "null") {
+            if(filter.friend === null) {
                 history.push({
                     pathname: "/findUsers",
                     search: `term=${filter.term}`
@@ -46,42 +89,18 @@ const FindUsersPage: React.FC<OwnPropsType> = (props) => {
             })
         }
     }, [filter, history]);
-    */
-    const internalSetFilter =(term: string, friend: null | "true" | "false" | "null" = null) => {
-        dispatch(actions.setFilter(term, friend))
-    }
-   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const term: string | null = urlParams.get("term");
-    const friend = urlParams.get("friend");
-    // @ts-ignore
-    internalSetFilter(term, friend);
-   }, [])
-    const internalFollow = (userId: number) => {
-        dispatch(follow(userId))
-    }
-    const internalUnfollow = (userId: number) => {
-        dispatch(unfollow(userId))
-    }
-    const internalFindUser = (term: string, friend: null | "true" | "false" | "null") => {
-        dispatch(findUser(term, friend))
-    }
-    const internalResetFind = () => {
-        dispatch(resetFind())
-    }
 
-    let isFetching = useSelector(getIsFetching);
     return (
         <div>
             {isFetching ? <Preloader /> : null}
             <FindUsers
                 follow={internalFollow}
                 unfollow={internalUnfollow}
-                findUser={internalFindUser}
                 resetFind={internalResetFind}
-                setFilter={internalSetFilter} />
+                setFilter={internalSetFilter}
+            />
         </div>
-    )
-}
+    );
+};
 
 export default withAuthRedirect(FindUsersPage);

@@ -1,20 +1,25 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { AppStateType } from "../../redux/redux-store";
+
+export type FriendFormType = null | "true" | "false" | "null";
+
 
 type UserSearchFormObjectType = {
     search: string,
-    friend: null | "true" | "false" | "null",
+    friend: FriendFormType,
 };
 
 type UserSearchFormProps = {
-    findUser: (term: string, friend: null | "true" | "false" | "null") => void;
     resetFind: () => void;
-    setFilter: (term: string, friend: null | "true" | "false" | "null") => void
+    setFilter: (term: string, friend: FriendFormType) => void
 };
 
 export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
-    ({ findUser, resetFind, setFilter }) => {
+    ({ resetFind, setFilter }) => {
         let [isUsersFromFind, showFindUsers] = useState(false);
+        const filter = useSelector((state: AppStateType) => state.UserPageData.filter);
 
         const userSearchFormValidate = (values: UserSearchFormObjectType) => {
             const errors = {};
@@ -39,7 +44,6 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
                 setSubmitting,
             }: { setSubmitting: (isSubmitting: boolean) => void }
         ) => {
-            findUser(values.search, values.friend);
             setFilter(values.search, values.friend);
             setSubmitting(false);
             showFindUsers(true);
@@ -48,7 +52,8 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
         return (
             <div>
                 <Formik
-                    initialValues={{ search: "", friend: "null" }}
+                    enableReinitialize
+                    initialValues={{ search: filter.term as string, friend: filter.friend as FriendFormType }}
                     validate={userSearchFormValidate}
                     onSubmit={submit}
                 >

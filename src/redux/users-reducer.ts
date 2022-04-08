@@ -13,15 +13,16 @@ let initialState = {
     UsersData: [] as Array<UserType>,
     isFetching: true,
     isFollowingInProgress: [] as Array<number>,
-    filter: { term: "" as null | string, friend: null as null | "true" | "false" | "null" },
+    filter: { term: "" as null | string, friend: null as null | boolean },
 };
 
 let getUsersThunkCreator = (): UsersThunkType => {
     return async (dispatch, getState) => {
+        const {term, friend} = getState().UserPageData.filter;
         dispatch(actions.toggleFetching(true));
-        let data = await usersAPI.getUsers();
+        let data = await usersAPI.getUsers(term, friend);
         dispatch(actions.toggleFetching(false));
-        dispatch(actions.setUsers(data.items));
+        dispatch(actions.setUsers(data.items, true));
     };
 };
 let followUnfollowToggle = async (
@@ -57,22 +58,6 @@ let unfollow = (userId: number): UsersThunkType => {
         );
     };
 };
-let findUser = (
-    term: string,
-    friend: null | "true" | "false" | "null" = null
-): UsersThunkType => {
-    return async (dispatch) => {
-        let friendBool = null;
-        if (friend === "null") {
-            friendBool = null;
-        } else if (friend != null) friendBool = friend === "true";
-        dispatch(actions.setFilter(term, friend));
-        dispatch(actions.toggleFetching(true));
-        let data = await usersAPI.findUser(term, friendBool);
-        dispatch(actions.toggleFetching(false));
-        dispatch(actions.setFindUsers(data.items));
-    };
-};
 let resetFind = (): UsersThunkType => {
     return async (dispatch) => {
         dispatch(actions.toggleFetching(true));
@@ -88,8 +73,6 @@ export const actions = {
         ({ type: "TOGGLE_IS_FETCHING", toggleFetching: toggle } as const),
     setUsers: (users: Array<UserType>, reset: boolean = false) =>
         ({ type: "SET_USERS", users, reset } as const),
-    setFindUsers: (users: Array<UserType>) =>
-        ({ type: "SET_FIND_USERS", users } as const),
     addToList: (userId: number) => ({ type: "ADD_TO_LIST", userId } as const),
     removeFromList: (userId: number) =>
         ({ type: "REMOVE_FROM_LIST", userId } as const),
@@ -100,8 +83,8 @@ export const actions = {
             isFetching,
         } as const),
     setFilter: (
-        term: string,
-        friend: null | "true" | "false" | "null" = null
+        term: string | null,
+        friend: null | boolean = null
     ) => ({ type: "SET_FILTER", filter: { term, friend } as const } as const),
 };
 
@@ -141,12 +124,6 @@ let userReducer = (
                 return state;
             }
         }
-        case "SET_FIND_USERS": {
-            return {
-                ...state,
-                UsersData: [...action.users],
-            };
-        }
         case "ADD_TO_LIST": {
             return {
                 ...state,
@@ -185,6 +162,5 @@ export {
     getUsersThunkCreator,
     follow,
     unfollow,
-    findUser,
     resetFind,
 };

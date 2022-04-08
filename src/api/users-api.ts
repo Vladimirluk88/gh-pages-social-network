@@ -2,8 +2,20 @@ import { instanse, GetItemsType, ResponseType } from './api';
 import { profileApi } from "./profile-api";
 
 export const usersAPI = {
-    getUsers() {
-        return instanse.get<GetItemsType>("users?page=5").then(response => response.data);
+    getUsers(term: string | null = "", friend: null | boolean = null) {
+        const termString = `term=${term}`;
+        const friendString = `friend=${friend}`;
+        /* eslint-disable */
+        if((term === "" || term === null) && friend === null) {
+            return instanse.get<GetItemsType>("users?page=1").then(response => response.data);
+        } else if((term !== "" && term !== null) && friend === null) {
+            return instanse.get<GetItemsType>("users" + "?" + termString).then(response => response.data);
+        } else if((term === "" || term === null) && friend !== null) {
+            return instanse.get<GetItemsType>("users" + "?" + friendString).then(response => response.data);
+        } else if ((term !== "" && term !== null) && friend !== null) {
+            return instanse.get<GetItemsType>("users" + "?" + termString + "&" + friendString).then(response => response.data);
+        } else return instanse.get<GetItemsType>("users?page=1").then(response => response.data);
+        /* eslint-enable */
     },
     getProfile(userId: number) {
         return profileApi.getProfile(userId);
@@ -14,7 +26,4 @@ export const usersAPI = {
     unfollowUser(userId: number) {
         return instanse.delete(`follow/${userId}`).then(response => response.data) as Promise<ResponseType>;
     },
-    findUser(term: string, friend: null | boolean) {
-        return instanse.get(`users?term=${term}` + (friend!=null ? `&friend=${friend}` : "")).then(response => response.data);
-    }
 };
