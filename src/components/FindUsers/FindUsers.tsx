@@ -5,7 +5,7 @@ import { FriendFormType, UserSearchForm } from "./UsersSearchForm";
 import { useSelector } from "react-redux";
 import {getIsFollowingInProgress,
     getUsersArraySuper,
-} from "../../redux/users-selectors";
+} from "../../redux/selectors/users-selectors";
 
 type MapDispatchPropsType = {
     follow: (userId: number) => void;

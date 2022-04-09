@@ -4,14 +4,16 @@ import {
     follow,
     unfollow,
     resetFind,
-    actions
+    actions,
 } from "../../redux/users-reducer";
 import React, { useCallback, useEffect } from "react";
 import { FindUsers } from "./FindUsers";
 import { Preloader } from "../common/preloader";
-import { getIsFetching } from "../../redux/users-selectors";
+import {
+    getIsFetching,
+    selectFilter,
+} from "../../redux/selectors/users-selectors";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
-import { AppStateType } from "../../redux/redux-store";
 import { useHistory } from "react-router-dom";
 import { FriendFormType } from "./UsersSearchForm";
 
@@ -23,25 +25,23 @@ const FindUsersPage: React.FC<OwnPropsType> = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const filter = useSelector(
-        (state: AppStateType) => state.UserPageData.filter
-    );
+    const filter = useSelector(selectFilter);
     let isFetching = useSelector(getIsFetching);
 
-    const internalSetFilter = useCallback((
-        term: string | null,
-        friend: FriendFormType = null
-    ) => {
-        dispatch(actions.setFilter(term, boolFriend(friend)));
-    }, [dispatch])
+    const internalSetFilter = useCallback(
+        (term: string | null, friend: FriendFormType = null) => {
+            dispatch(actions.setFilter(term, boolFriend(friend)));
+        },
+        [dispatch]
+    );
 
     const boolFriend = (friend: string | null) => {
-        if(friend !== null) {
-            if(friend === "null") {
-                return null
-            } else return (friend === "true")
+        if (friend !== null) {
+            if (friend === "null") {
+                return null;
+            } else return friend === "true";
         }
-        if(friend === null || friend === undefined) return null
+        if (friend === null || friend === undefined) return null;
     };
 
     const internalFollow = (userId: number) => {
@@ -62,31 +62,30 @@ const FindUsersPage: React.FC<OwnPropsType> = (props) => {
         const urlParams = new URLSearchParams(window.location.search);
         const term: string | null = urlParams.get("term");
         let friend = urlParams.get("friend");
-        if(term !== null || friend !== null) {
+        if (term !== null || friend !== null) {
             // @ts-ignore
             internalSetFilter(term, friend);
         }
     }, [internalSetFilter]);
 
     useEffect(() => {
-        if(filter.term !== "") {
-            if(filter.friend === null) {
+        if (filter.term !== "") {
+            if (filter.friend === null) {
                 history.push({
                     pathname: "/findUsers",
-                    search: `term=${filter.term}`
+                    search: `term=${filter.term}`,
                 });
             } else {
                 history.push({
                     pathname: "/findUsers",
-                    search: `term=${filter.term}&friend=${filter.friend}`
+                    search: `term=${filter.term}&friend=${filter.friend}`,
                 });
             }
-
         } else {
             history.push({
                 pathname: "/findUsers",
-                search: ""
-            })
+                search: "",
+            });
         }
     }, [filter, history]);
 

@@ -1,7 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { AppStateType } from "../../redux/redux-store";
+import { selectFilter } from "../../redux/selectors/users-selectors";
 
 export type FriendFormType = null | "true" | "false" | "null";
 
@@ -16,13 +16,19 @@ type UserSearchFormProps = {
     setFilter: (term: string, friend: FriendFormType) => void
 };
 
+type SearchErrorsType = {
+    search: string | null
+};
+
 export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
     ({ resetFind, setFilter }) => {
         let [isUsersFromFind, showFindUsers] = useState(false);
-        const filter = useSelector((state: AppStateType) => state.UserPageData.filter);
+        const filter = useSelector(selectFilter);
 
         const userSearchFormValidate = (values: UserSearchFormObjectType) => {
-            const errors = {};
+            const errors: SearchErrorsType = {
+                search: null
+            };
             if (!values.search) {
                 if (isUsersFromFind) {
                     showFindUsers(false);
@@ -30,7 +36,6 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
                     setFilter("", null);
                 } else {
                     if(!values.friend){
-                    // @ts-ignore
                     errors.search = "Required";
                 }
                 }

@@ -1,15 +1,17 @@
-.header {
-  max-height: 100px;
-  width: 100%;
-  background-color: #aaa;
-  display: flex;
-  justify-content: space-between;
-}
-
-.header img {
-  max-width: 50px;
-}
-
 .login_block {
-
+  display: flex;
+  color: white;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+.login_block div {
+  display: flex;
+  align-items: center;
+}
+.login_block button {
+  margin-left: 5px;
+  color: black;
+  height: 30px;
+  display: flex;
+  align-items: center;
 }
