@@ -2,12 +2,12 @@ import { instanse, GetItemsType, ResponseType } from './api';
 import { profileApi } from "./profile-api";
 
 export const usersAPI = {
-    getUsers(term: string | null = "", friend: null | boolean = null) {
+    getUsers(term: string | null = "", friend: null | boolean = null, page: number = 1) {
         const termString = `term=${term}`;
         const friendString = `friend=${friend}`;
         /* eslint-disable */
         if((term === "" || term === null) && friend === null) {
-            return instanse.get<GetItemsType>("users?page=1").then(response => response.data);
+            return instanse.get<GetItemsType>("users?page=" + `${page}`).then(response => response.data);
         } else if((term !== "" && term !== null) && friend === null) {
             return instanse.get<GetItemsType>("users" + "?" + termString).then(response => response.data);
         } else if((term === "" || term === null) && friend !== null) {

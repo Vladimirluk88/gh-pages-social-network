@@ -14,6 +14,8 @@ let initialState = {
     isFetching: true,
     isFollowingInProgress: [] as Array<number>,
     filter: { term: "" as null | string, friend: null as null | boolean },
+    showedLastPage: 1,
+    countPageMayRecieved: 0,
 };
 
 let getUsersThunkCreator = (): UsersThunkType => {
@@ -22,6 +24,7 @@ let getUsersThunkCreator = (): UsersThunkType => {
         dispatch(actions.toggleFetching(true));
         let data = await usersAPI.getUsers(term, friend);
         dispatch(actions.toggleFetching(false));
+        dispatch(actions.setCountOfPages(data.totalCount));
         dispatch(actions.setUsers(data.items, true));
     };
 };
@@ -68,11 +71,12 @@ let resetFind = (): UsersThunkType => {
 };
 
 export const actions = {
-    showMore: () => ({ type: "SHOW_MORE" } as const),
+    showMoreUsers: (page: number) => ({ type: "SHOW_MORE_USERS", page } as const),
+    setCountOfPages: (count: number) => ({ type: "SET_COUNT_OF_PAGES", count } as const),
     toggleFetching: (toggle: boolean) =>
         ({ type: "TOGGLE_IS_FETCHING", toggleFetching: toggle } as const),
-    setUsers: (users: Array<UserType>, reset: boolean = false) =>
-        ({ type: "SET_USERS", users, reset } as const),
+    setUsers: (users: Array<UserType>, reset: boolean = false, append: boolean = false) =>
+        ({ type: "SET_USERS", users, reset, append } as const),
     addToList: (userId: number) => ({ type: "ADD_TO_LIST", userId } as const),
     removeFromList: (userId: number) =>
         ({ type: "REMOVE_FROM_LIST", userId } as const),
@@ -93,8 +97,11 @@ let userReducer = (
     action: ActionTypes
 ): InitialStateType => {
     switch (action.type) {
-        case "SHOW_MORE": {
-            return state;
+        case "SHOW_MORE_USERS": {
+            return { ...state, showedLastPage: action.page };
+        }
+        case "SET_COUNT_OF_PAGES": {
+            return { ...state, countPageMayRecieved: action.count };
         }
         case "TOGGLE_IS_FETCHING": {
             return { ...state, isFetching: action.toggleFetching };
@@ -110,7 +117,7 @@ let userReducer = (
             };
         }
         case "SET_USERS": {
-            if (state.UsersData.length === 0 && !action.reset) {
+            if (state.UsersData.length === 0 && !action.reset && !action.append) {
                 return {
                     ...state,
                     UsersData: [...state.UsersData, ...action.users],
@@ -120,6 +127,11 @@ let userReducer = (
                     ...state,
                     UsersData: [...action.users],
                 };
+            } else if (action.append) {
+                return {
+                    ...state,
+                    UsersData: [...state.UsersData , ...action.users]
+                }
             } else {
                 return state;
             }
