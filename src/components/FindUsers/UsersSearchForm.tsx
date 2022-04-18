@@ -1,6 +1,8 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Button } from "antd";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import styles from "./UserSearchForm.module.css";
 import { selectFilter } from "../../redux/selectors/users-selectors";
 
 export type FriendFormType = null | "true" | "false" | "null";
@@ -12,7 +14,6 @@ type UserSearchFormObjectType = {
 };
 
 type UserSearchFormProps = {
-    resetFind: () => void;
     setFilter: (term: string, friend: FriendFormType) => void
 };
 
@@ -21,7 +22,7 @@ type SearchErrorsType = {
 };
 
 export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
-    ({ resetFind, setFilter }) => {
+    ({ setFilter }) => {
         let [isUsersFromFind, showFindUsers] = useState(false);
         const filter = useSelector(selectFilter);
 
@@ -32,7 +33,6 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
             if (!values.search) {
                 if (isUsersFromFind) {
                     showFindUsers(false);
-                    resetFind();
                     setFilter("", null);
                 } else {
                     if(!values.friend){
@@ -59,21 +59,21 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
                 <Formik
                     enableReinitialize
                     initialValues={{ search: filter.term as string, friend: filter.friend as FriendFormType }}
-                    validate={userSearchFormValidate}
+                    validate={() => userSearchFormValidate}
                     onSubmit={submit}
                 >
                     {({ isSubmitting }) => (
-                        <Form>
+                        <Form className={styles.user_search_form}>
                             <Field type="search" name="search" />
                             <Field name="friend" as="select">
                                 <option value="null">All</option>
                                 <option value="true">Only followed</option>
                                 <option value="false">Only unfollowed</option>
                             </Field>
-                            <ErrorMessage name="search" component="div" />
-                            <button type="submit" disabled={isSubmitting}>
+                            <ErrorMessage name="error" />
+                            <Button htmlType="submit" disabled={isSubmitting}>
                                 Find
-                            </button>
+                            </Button>
                         </Form>
                     )}
                 </Formik>

@@ -1,0 +1,14 @@
+.user_search_form {
+    display: flex;
+    margin-left: 10px;
+    padding-top: 10px;
+}
+.user_search_form input {
+    margin-right: 15px;
+}
+.user_search_form select {
+    margin-right: 15px;
+}
+.user_search_form button {
+
+}

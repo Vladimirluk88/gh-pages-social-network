@@ -3,7 +3,6 @@ import {
     getUsersThunkCreator,
     follow,
     unfollow,
-    resetFind,
     actions,
 } from "../../redux/users-reducer";
 import React, { useCallback, useEffect } from "react";
@@ -50,9 +49,9 @@ const FindUsersPage: React.FC<OwnPropsType> = (props) => {
     const internalUnfollow = (userId: number) => {
         dispatch(unfollow(userId));
     };
-    const internalResetFind = () => {
-        dispatch(resetFind());
-    };
+    const internalShowMoreUsers = () => {
+        
+    }
 
     useEffect(() => {
         dispatch(getUsersThunkCreator());
@@ -95,8 +94,8 @@ const FindUsersPage: React.FC<OwnPropsType> = (props) => {
             <FindUsers
                 follow={internalFollow}
                 unfollow={internalUnfollow}
-                resetFind={internalResetFind}
                 setFilter={internalSetFilter}
+                showMoreUsers={internalShowMoreUsers}
             />
         </div>
     );

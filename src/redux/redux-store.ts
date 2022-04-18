@@ -7,6 +7,7 @@ import thunkMiddleware from 'redux-thunk';
 import { reducer as formReducer } from 'redux-form'
 import { appReducer } from "./app-reducer";
 import { ThunkAction } from "redux-thunk";
+import chatReducer from "./chat-reducer";
 
 let reducers = combineReducers({
     ProfileData: profileReducer,
@@ -14,7 +15,8 @@ let reducers = combineReducers({
     UserPageData: userReducer,
     auth: authReducer,
     form: formReducer,
-    app: appReducer
+    app: appReducer,
+    chat: chatReducer
 });
 
 export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never;

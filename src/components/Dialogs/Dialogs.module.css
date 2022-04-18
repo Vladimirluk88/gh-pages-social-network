@@ -1,15 +1,15 @@
 .dialogs_content {
     display: flex;
-    
+    background-color: white;
 }
 
 .dialogs_items {
-    flex: 0 1 30%;
+    flex: 0 1 10%;
 
 }
 
 .dialogs_item {
-    padding: 5px;
+    padding: 15px;
 }
 
 .dialogs_item_active {
@@ -17,7 +17,7 @@
 }
 
 .dialog_messages {
-    flex: 1 0 60%;
+    flex: 1 0 90%;
 }
 
 .dialog_message_item {

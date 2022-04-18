@@ -3,7 +3,7 @@ import "./App.css";
 import { Layout } from "antd";
 import React from "react";
 import Nav from "./components/Nav/Nav";
-import HeaderComponen from "./components/Header/Header";
+import HeaderComponent from "./components/Header/Header";
 import { Route, Switch } from "react-router-dom";
 import { connect, Provider } from "react-redux";
 import { initializeApp } from "./redux/app-reducer";
@@ -14,6 +14,7 @@ import { AppStateType, store } from "./redux/redux-store";
 import { BrowserRouter } from "react-router-dom";
 import { withSuspense } from "./hoc/withSuspense";
 import { Redirect } from "react-router-dom";
+const ChatPage = React.lazy(() => import("./pages/ChatPage"));
 const DialogsContainer = React.lazy(
     () => import("./components/Dialogs/DialogsContainer")
 );
@@ -29,6 +30,7 @@ const SuspendedDialogs = withSuspense(DialogsContainer);
 const SuspendedProfile = withSuspense(FindUsersContainer);
 const SuspendedLogin = withSuspense(Login);
 const SuspendedUserProfile = withSuspense(ProfileContainer);
+const SuspendedChat = withSuspense(ChatPage)
 
 type PropsType = ReturnType<typeof mapStateToProps>;
 type DispatchPropsType = {
@@ -77,7 +79,7 @@ class App extends React.Component<PropsType & DispatchPropsType> {
                     <Nav />
                 </Sider>
                 <Layout className="site-layout">
-                    <HeaderComponen
+                    <HeaderComponent
                         toggle={this.toggle.bind(App)}
                         collapsed={this.state.collapsed}
                     />
@@ -110,6 +112,10 @@ class App extends React.Component<PropsType & DispatchPropsType> {
                             <Route
                                 path="/login"
                                 render={() => <SuspendedLogin />}
+                            />
+                            <Route
+                                path="/chat"
+                                render={() => <SuspendedChat />}
                             />
                             <Route
                                 path="*"

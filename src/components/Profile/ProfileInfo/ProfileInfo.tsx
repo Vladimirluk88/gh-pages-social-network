@@ -35,7 +35,7 @@ const ProfileInfo: React.FC<OwnPropsType> = (props) => {
         <div className={styles.info_about_user}>
              <div className={styles.avatar_name_user}>
              <div className={styles.user_avatar}>
-             <img src={props.profile.photos.large || props.profile.photos.small || "https://www.pnglib.com/wp-content/uploads/2020/08/simple-user-icon_5f3407053cf89.png"} alt="" className={styles.info_about_user__avatar} />
+             <img src={props.profile.photos.large || props.profile.photos.small || "http://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png"} alt="" className={styles.info_about_user__avatar} />
             {props.isOwner ? <input type="file" onChange={mainPhotoSelected}></input> : <></>}
              </div>
             <div className={styles.info_about_user__text}>

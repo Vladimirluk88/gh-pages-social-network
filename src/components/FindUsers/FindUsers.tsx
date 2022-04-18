@@ -10,21 +10,21 @@ import {getIsFollowingInProgress,
 type MapDispatchPropsType = {
     follow: (userId: number) => void;
     unfollow: (userId: number) => void;
-    resetFind: () => void;
-    setFilter: (term: string, friend: FriendFormType) => void
+    setFilter: (term: string, friend: FriendFormType) => void,
+    showMoreUsers: () => void
 };
 
 let FindUsers: React.FC<{} & MapDispatchPropsType> = ({
     follow,
     unfollow,
-    resetFind,
-    setFilter
+    setFilter,
+    showMoreUsers
 }) => {
     const usersArray = useSelector(getUsersArraySuper);
     const isFollowingInProgress = useSelector(getIsFollowingInProgress);
     return (
         <div className={styles.find_users_wrapper}>
-            <UserSearchForm resetFind={resetFind} setFilter={setFilter} />
+            <UserSearchForm setFilter={setFilter} />
             <div className={styles.find_users_items}>
                 <div className={styles.find_users_item}>
                     {usersArray.map((e) => {
@@ -43,11 +43,9 @@ let FindUsers: React.FC<{} & MapDispatchPropsType> = ({
                     })}
                 </div>
             </div>
-           {/*
             <div className={styles.find_users_show_more}>
-                <button onClick={showMore}>Show more</button>
+                <button onClick={showMoreUsers}>Show more</button>
             </div>
-           */}
         </div>
     );
 };

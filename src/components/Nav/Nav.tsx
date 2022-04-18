@@ -20,7 +20,7 @@ const Nav = () => {
               </Menu.Item>
               <Menu.Item key="2" icon={<MessageOutlined />}>
               <NavLink to="/dialogs">
-                    Massages
+                    Messages
                 </NavLink>
               </Menu.Item>
               <Menu.Item key="3" icon={<SearchOutlined />}>
@@ -28,7 +28,12 @@ const Nav = () => {
                     Find Users
                 </NavLink>
               </Menu.Item>
-              <Menu.Item key="4" icon={<SettingFilled />}>
+              <Menu.Item key="4" icon={<MessageOutlined />}>
+              <NavLink to="/chat">
+                    Chat
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item key="5" icon={<SettingFilled />}>
               <NavLink to="/#">
                     Settings
                 </NavLink>
@@ -48,7 +53,7 @@ function Nav() {
             </div>
             <div className={`${styles.sidebar__item} ${styles.sidebar__item_active}`}>
                 <NavLink to="/dialogs" activeClassName={styles.active_link}>
-                    Massages
+                    Messages
                 </NavLink>
             </div>
             <div className={styles.sidebar__item}>

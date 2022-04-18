@@ -20,17 +20,17 @@ const ProfileInfoDataForm: React.FC<InjectedFormProps<ProfileType, OwnPropsType>
                 <ProfileStatusWithHooks status={status} updateStatus={updateStatus} />
             </div>
             <div className={styles.user_looking_for_a_job}>
-                <b>Looking for a job:</b> <Field validate={[requiredFiled]} component={Input} name="lookingForAJob" placeholder="Looking for a job" type="checkbox" />
+                <b>Looking for a job:</b> <Field component={Input} name="lookingForAJob" placeholder="Looking for a job" type="checkbox" />
                  {/* {profile.lookingForAJob ? "yes" : "no"} */}
             </div>
             <div className={styles.user_looking_for_a_job}>
                 <b>Looking for a job description:</b> <Field validate={[requiredFiled]} component={Input} name="lookingForAJobDescription" placeholder="Looking for a job description" />
             </div>
             <div className={styles.user_looking_for_a_job}>
-                <b>Full name:</b> <Field validate={[requiredFiled]} component={Input}  name="fullName" placeholder="Full name" />
+                <b>Full name:</b> <Field component={Input}  name="fullName" placeholder="Full name" />
             </div>
             <div className={styles.user_looking_for_a_job}>
-                <b>About me:</b> <Field validate={[requiredFiled]} component={Input}  name="aboutMe" placeholder="About me" />
+                <b>About me:</b> <Field component={Input}  name="aboutMe" placeholder="About me" />
             </div>
             </form>
     )

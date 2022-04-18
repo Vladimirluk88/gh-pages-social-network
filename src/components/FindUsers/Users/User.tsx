@@ -16,16 +16,18 @@ const User: React.FC<OwnPropsType> = (props) => {
     return (
         <div className={styles.find_users_user}>
             <NavLink to={"/profile/" + props.id}>
+                <div className={styles.find_users_link_wrapper}>
                 <div className={styles.find_users_user_image}>
                     <img
                         src={
-                            props.UserImage.large || props.UserImage.small || ""
+                            props.UserImage.large || props.UserImage.small || "http://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png"
                         }
                         alt=""
                     />
                 </div>
                 <div className={styles.find_users_user_info}>
                     {props.UserDescription}
+                </div>
                 </div>
             </NavLink>
             <div className={styles.find_users_user_buttons}>
