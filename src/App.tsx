@@ -30,7 +30,7 @@ const SuspendedDialogs = withSuspense(DialogsContainer);
 const SuspendedProfile = withSuspense(FindUsersContainer);
 const SuspendedLogin = withSuspense(Login);
 const SuspendedUserProfile = withSuspense(ProfileContainer);
-const SuspendedChat = withSuspense(ChatPage)
+const SuspendedChat = withSuspense(ChatPage);
 
 type PropsType = ReturnType<typeof mapStateToProps>;
 type DispatchPropsType = {
@@ -128,71 +128,6 @@ class App extends React.Component<PropsType & DispatchPropsType> {
         );
     }
 }
-
-/*
-class App extends React.Component<PropsType & DispatchPropsType> {
-    catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
-        console.warn("Some error occured");
-    };
-    componentDidMount() {
-        this.props.initializeApp();
-        window.addEventListener(
-            "unhandledrejection",
-            this.catchAllUnhandledErrors
-        );
-    }
-    componentWillUnmount() {
-        window.removeEventListener(
-            "unhandledrejection",
-            this.catchAllUnhandledErrors
-        );
-    }
-    render() {
-        if (!this.props.initialized) {
-            return <Preloader />;
-        }
-        return (
-            <div>
-                <div className="App">
-                    <div className="wrapper">
-                        <HeaderContainer />
-                        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}> <Nav /> </Menu>
-                        <div className="main_content_wrapper">
-                            <Switch>
-                                <Route
-                                    exact
-                                    path="/"
-                                    render={() => <Redirect to={"/profile"} />}
-                                />
-                                <Route
-                                    path="/profile/:userId?"
-                                    render={() => <SuspendedUserProfile />}
-                                />
-                                <Route
-                                    path="/dialogs"
-                                    render={() => <SuspendedDialogs />}
-                                />
-                                <Route
-                                    path="/findUsers"
-                                    render={() => <SuspendedProfile />}
-                                />
-                                <Route
-                                    path="/login"
-                                    render={() => <SuspendedLogin />}
-                                />
-                                <Route
-                                    path="*"
-                                    render={() => <div>404 NOT FOUND</div>}
-                                />
-                            </Switch>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
-*/
 
 let mapStateToProps = (state: AppStateType) => ({
     initialized: state.app.initialized,

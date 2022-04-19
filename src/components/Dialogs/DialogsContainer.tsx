@@ -8,8 +8,11 @@ import { AppStateType } from "../../redux/redux-store";
 let mapStateToProps = (state: AppStateType) => {
     let dialogsPageData = state.DialogsPageData;
     return {
-        dialogsPageData
-    }
-}
+        dialogsPageData,
+    };
+};
 
-export default compose<React.ComponentType>(connect(mapStateToProps, {...actions}), withAuthRedirect)(Dialogs);
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, { ...actions }),
+    withAuthRedirect
+)(Dialogs);

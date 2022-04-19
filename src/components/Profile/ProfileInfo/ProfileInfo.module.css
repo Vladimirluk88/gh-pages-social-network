@@ -1,27 +1,41 @@
 .info_about_user__avatar {
     max-width: 150px;
-  }
-
-  .info_about_user {
-  }
-  .user_avatar {
+}
+.edit_mode_btn {
+    padding-bottom: 15px;
+}
+.info_about_user {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.info_about_user__text {
+    font-weight: bold;
+}
+.info_about_user input[type="file"] {
+    transform: translate(30%, 0);
+    color: transparent;
+}
+.user_avatar {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+}
 .user_avatar img {
-  padding-bottom: 10px;
+    padding-bottom: 10px;
 }
 .user_status {
-  cursor: pointer;
-  display: flex;
+    display: flex;
 }
 .user_status_text {
-  cursor: text;
-  margin-right: 10px;
+    cursor: text;
+    margin-right: 10px;
 }
-  .avatar_name_user {
+.avatar_name_user {
     display: flex;
-    justify-content: space-around;
+
     align-items: center;
-  }
+    padding-bottom: 10px;
+}
+.profile_status {
+    cursor: pointer;
+}

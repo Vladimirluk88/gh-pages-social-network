@@ -1,3 +1,22 @@
 .my_posts {
-  background-color: gray;
+    background-color: #001529;
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.85);
+}
+.my_posts span {
+    font-weight: bold;
+}
+.my_posts button {
+    color: black;
+    margin-right: 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.my_posts__input {
+    color: black;
+}
+.my_posts__input textarea {
+    resize: none;
+    width: 200px;
+    height: 70px;
 }

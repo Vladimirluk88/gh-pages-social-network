@@ -1,7 +1,5 @@
 .top_image img {
-  width: 100%;
-  max-height: 100px;
-  object-fit: cover;
+    width: 100%;
+    max-height: 100px;
+    object-fit: cover;
 }
-
-

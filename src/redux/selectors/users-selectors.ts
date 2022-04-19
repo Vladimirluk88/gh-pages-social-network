@@ -2,8 +2,9 @@ import { UserType } from "../../types/types";
 import { createSelector } from "reselect";
 import { AppStateType } from "../redux-store";
 
-const getIsFollowingInProgress = (state: AppStateType) => state.UserPageData.isFollowingInProgress;
-const getUsers = (state: AppStateType) => state.UserPageData.UsersData
+const getIsFollowingInProgress = (state: AppStateType) =>
+    state.UserPageData.isFollowingInProgress;
+const getUsers = (state: AppStateType) => state.UserPageData.UsersData;
 const getUsersArraySuper = createSelector(
     getUsers,
     (users: Array<UserType>): Array<UserType> => {
@@ -19,5 +20,5 @@ export {
     getIsFetching,
     getUsersArraySuper,
     getIsFollowingInProgress,
-    selectFilter
+    selectFilter,
 };

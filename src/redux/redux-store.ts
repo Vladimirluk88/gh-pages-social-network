@@ -3,8 +3,8 @@ import { dialogsReducer } from "./dialogs-reducer";
 import { profileReducer } from "./profile-reducer";
 import { userReducer } from "./users-reducer";
 import { authReducer } from "./auth-reducer";
-import thunkMiddleware from 'redux-thunk';
-import { reducer as formReducer } from 'redux-form'
+import thunkMiddleware from "redux-thunk";
+import { reducer as formReducer } from "redux-form";
 import { appReducer } from "./app-reducer";
 import { ThunkAction } from "redux-thunk";
 import chatReducer from "./chat-reducer";
@@ -16,12 +16,21 @@ let reducers = combineReducers({
     auth: authReducer,
     form: formReducer,
     app: appReducer,
-    chat: chatReducer
+    chat: chatReducer,
 });
 
-export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never;
+export type InferActionsTypes<T> = T extends {
+    [keys: string]: (...args: any[]) => infer U;
+}
+    ? U
+    : never;
 
-export type ThunkType<AT extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, AT>;
+export type ThunkType<AT extends Action, R = Promise<void>> = ThunkAction<
+    R,
+    AppStateType,
+    unknown,
+    AT
+>;
 type RootReducerType = typeof reducers;
 export type AppStateType = ReturnType<RootReducerType>;
 

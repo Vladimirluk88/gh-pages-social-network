@@ -1,8 +1,8 @@
-import { ChatMessageType } from './../redux/chat-reducer';
+import { ChatMessageType } from "./../redux/chat-reducer";
 
 let subscribers = {
     "messages-received": [] as MessagesReceivedSubscriberType[],
-    "status-changed": [] as StatusChangedSubscriberType[]
+    "status-changed": [] as StatusChangedSubscriberType[],
 };
 
 let ws: WebSocket | null;
@@ -22,7 +22,7 @@ const openHandler = () => {
 };
 const errorHandler = () => {
     notifySubscribersAboutStatus("error");
-    console.error("REFRESH PAGE")
+    console.error("REFRESH PAGE");
 };
 
 const cleanUp = () => {
@@ -30,11 +30,11 @@ const cleanUp = () => {
     ws?.removeEventListener("message", messageHandler);
     ws?.removeEventListener("open", openHandler);
     ws?.removeEventListener("error", errorHandler);
-}
+};
 
 const notifySubscribersAboutStatus = (status: StatusType) => {
     subscribers["status-changed"].forEach((s) => s(status));
-}
+};
 
 function createChannel() {
     cleanUp();
@@ -59,17 +59,27 @@ export const chatAPI = {
         cleanUp();
         ws?.close();
     },
-    subscribe(eventName: EventsNameType, callback: MessagesReceivedSubscriberType | StatusChangedSubscriberType) {
+    subscribe(
+        eventName: EventsNameType,
+        callback: MessagesReceivedSubscriberType | StatusChangedSubscriberType
+    ) {
         // @ts-ignore
         subscribers[eventName].push(callback);
         return () => {
             // @ts-ignore
-            subscribers[eventName] = subscribers[eventName].filter((s) => s !== callback);
+            subscribers[eventName] = subscribers[eventName].filter(
+                (s: any) => s !== callback
+            );
         };
     },
-    unsubscribe(eventName: EventsNameType, callback: SubscriberType | StatusChangedSubscriberType) {
+    unsubscribe(
+        eventName: EventsNameType,
+        callback: SubscriberType | StatusChangedSubscriberType
+    ) {
         // @ts-ignore
-        subscribers[eventName] = subscribers[eventName].filter((s) => s !== callback);
+        subscribers[eventName] = subscribers[eventName].filter(
+            (s: any) => s !== callback
+        );
     },
     sendMessage(message: string) {
         ws?.send(message);

@@ -5,7 +5,6 @@
 
 .dialogs_items {
     flex: 0 1 10%;
-
 }
 
 .dialogs_item {
@@ -22,4 +21,9 @@
 
 .dialog_message_item {
     padding: 10px;
+}
+.dialogs_textarea textarea {
+    resize: none;
+    width: 200px;
+    height: 70px;
 }

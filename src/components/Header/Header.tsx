@@ -49,7 +49,9 @@ const HeaderComponent: React.FC<OwnPropsType> = ({ collapsed, toggle }) => {
                                     </Button>
                                 </div>
                             ) : (
-                                <Button><NavLink to={"/login"}> login </NavLink></Button>
+                                <Button>
+                                    <NavLink to={"/login"}> login </NavLink>
+                                </Button>
                             )}
                         </div>
                     </Col>

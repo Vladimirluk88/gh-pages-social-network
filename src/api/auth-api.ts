@@ -32,7 +32,12 @@ export const authAPI = {
         captcha: null | string = null
     ) {
         return instanse
-            .post<ResponseType<LoginResponseType, ResultCodesEnum | ResultCodesForCaptcha>>("auth/login", {
+            .post<
+                ResponseType<
+                    LoginResponseType,
+                    ResultCodesEnum | ResultCodesForCaptcha
+                >
+            >("auth/login", {
                 email,
                 password,
                 rememberMe,

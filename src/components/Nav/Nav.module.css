@@ -1,15 +1,15 @@
 .sidebar__menu {
-  width: 100px;
-  background-color: rgb(119, 228, 125);
-  position: fixed;
+    width: 100px;
+    background-color: rgb(119, 228, 125);
+    position: fixed;
 }
 
 .sidebar__item a {
-  text-decoration: none;
-  color: white;
+    text-decoration: none;
+    color: white;
 }
 
 .sidebar__item a.active_link {
-  background-color: red;
-  color: black;
+    background-color: red;
+    color: black;
 }

@@ -1,7 +1,11 @@
 .find_users_wrapper {
+    overflow-y: scroll;
+    max-height: 1000px;
     background-color: white;
 }
 .find_users_show_more {
     border: 2px rgb(41, 41, 41);
     background-color: white;
+    margin-left: 15px;
+    margin-bottom: 15px;
 }

@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sendMessage, startMessagesListener, stopMessagesListener } from "../redux/chat-reducer";
+import {
+    sendMessage,
+    startMessagesListener,
+    stopMessagesListener,
+} from "../redux/chat-reducer";
 import { AppStateType } from "../redux/redux-store";
 
 type ChatMessageType = {
@@ -25,15 +29,17 @@ const Chat: React.FC = () => {
     useEffect(() => {
         dispatch(startMessagesListener());
         return () => {
-            dispatch(stopMessagesListener())
-        }
-    }, [dispatch])
+            dispatch(stopMessagesListener());
+        };
+    }, [dispatch]);
     return (
         <div>
-            {status === "error" && <div>Some error occured. Please refresh page</div>}
+            {status === "error" && (
+                <div>Some error occured. Please refresh page</div>
+            )}
             <>
-            <Messages />
-            <AddMessageForm />
+                <Messages />
+                <AddMessageForm />
             </>
         </div>
     );
@@ -46,23 +52,30 @@ const Messages: React.FC = () => {
 
     const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         let element = e.currentTarget;
-        if(Math.abs((element.scrollHeight - element.scrollTop) - element.clientHeight) < 50) {
+        if (
+            Math.abs(
+                element.scrollHeight - element.scrollTop - element.clientHeight
+            ) < 50
+        ) {
             !autoScroll && setAutoScroll(true);
         } else {
             autoScroll && setAutoScroll(false);
         }
-    }
+    };
 
     useEffect(() => {
         messageAnchorRef.current?.scrollIntoView();
-    }, [])
+    }, []);
     useEffect(() => {
-        if(autoScroll) {
-            messageAnchorRef.current?.scrollIntoView({behavior: "smooth"});
+        if (autoScroll) {
+            messageAnchorRef.current?.scrollIntoView({ behavior: "smooth" });
         }
-    }, [messages, autoScroll])
+    }, [messages, autoScroll]);
     return (
-        <div style={{ height: "700px", overflowY: "auto" }} onScroll={scrollHandler}>
+        <div
+            style={{ height: "700px", overflowY: "auto" }}
+            onScroll={scrollHandler}
+        >
             {messages.map((m) => (
                 <Message message={m} key={m.id} />
             ))}
@@ -78,7 +91,8 @@ type MessagePropsType = {
 const Message: React.FC<MessagePropsType> = React.memo(({ message }) => {
     return (
         <div>
-            <img alt="user"
+            <img
+                alt="user"
                 src={
                     message.photo ||
                     "https://www.pnglib.com/wp-content/uploads/2020/08/simple-user-icon_5f3407053cf89.png"
@@ -91,7 +105,7 @@ const Message: React.FC<MessagePropsType> = React.memo(({ message }) => {
             <hr />
         </div>
     );
-})
+});
 
 const AddMessageForm: React.FC = () => {
     const [message, setMessage] = useState("");
@@ -112,6 +126,11 @@ const AddMessageForm: React.FC = () => {
                 <textarea
                     onChange={(e) => setMessage(e.currentTarget.value)}
                     value={message}
+                    style={{
+                        resize: "none",
+                        width: 200,
+                        height: 70,
+                    }}
                 ></textarea>
             </div>
             <div>

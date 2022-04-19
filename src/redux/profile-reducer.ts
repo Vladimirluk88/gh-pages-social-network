@@ -44,10 +44,19 @@ function updateStatus(status: string): ProfileThunkType {
     };
 }
 function saveProfile(formData: ProfileType): ProfileThunkType {
-    return async (dispatch) => {
-        let data = await profileApi.saveProfile(formData);
+    return async (dispatch, getState) => {
+        let data = await profileApi.saveProfile({
+            ...formData,
+            photos: getState().ProfileData.profile?.photos as PhotosType,
+        });
         if (data.data.resultCode === 0) {
-            dispatch(actions.updateProfileData(formData));
+            dispatch(
+                actions.updateProfileData({
+                    ...formData,
+                    photos: getState().ProfileData.profile
+                        ?.photos as PhotosType,
+                })
+            );
         }
     };
 }

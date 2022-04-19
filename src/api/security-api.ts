@@ -1,11 +1,13 @@
-import { instanse } from './api';
+import { instanse } from "./api";
 
 type GetCaptchaUrlResponseType = {
-    url: string
-}
+    url: string;
+};
 
 export const securityApi = {
     getCaptchaUrl() {
-        return instanse.get<GetCaptchaUrlResponseType>("security/get-captcha-url");
-    }
+        return instanse.get<GetCaptchaUrlResponseType>(
+            "security/get-captcha-url"
+        );
+    },
 };

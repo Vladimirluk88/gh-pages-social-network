@@ -8,19 +8,24 @@ let mapStateToPropsForRedirect = (state: AppStateType) => ({
 });
 
 type MapPropsType = {
-    isAuth: boolean,
-}
+    isAuth: boolean;
+};
 
-export function withAuthRedirect<WCP> (Component: React.ComponentType<WCP>) {
+export function withAuthRedirect<WCP>(Component: React.ComponentType<WCP>) {
     const RedirectComponent: React.FC<MapPropsType & {}> = (props) => {
-        let {isAuth, ...restProps} = props;
+        let { isAuth, ...restProps } = props;
         if (!isAuth) {
             return <Redirect to="/login" />;
         } else {
-            //tslint:disable-next-line
-            return <Component {...restProps as WCP} />;
+            // @ts-ignore
+            return <Component {...(restProps as WCP)} />;
         }
-    }
-    let connectedRedirectComponent = connect<MapPropsType, {}, WCP, AppStateType>(mapStateToPropsForRedirect)(RedirectComponent);
+    };
+    let connectedRedirectComponent = connect<
+        MapPropsType,
+        {},
+        WCP,
+        AppStateType
+    >(mapStateToPropsForRedirect)(RedirectComponent);
     return connectedRedirectComponent;
-};
+}

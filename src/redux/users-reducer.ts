@@ -14,18 +14,36 @@ let initialState = {
     isFetching: true,
     isFollowingInProgress: [] as Array<number>,
     filter: { term: "" as null | string, friend: null as null | boolean },
-    showedLastPage: 1,
+    showedLastPage: 2,
     countPageMayRecieved: 0,
 };
 
 let getUsersThunkCreator = (): UsersThunkType => {
     return async (dispatch, getState) => {
-        const {term, friend} = getState().UserPageData.filter;
+        const { term, friend } = getState().UserPageData.filter;
         dispatch(actions.toggleFetching(true));
         let data = await usersAPI.getUsers(term, friend);
-        dispatch(actions.toggleFetching(false));
-        dispatch(actions.setCountOfPages(data.totalCount));
         dispatch(actions.setUsers(data.items, true));
+        dispatch(actions.toggleFetching(false));
+        dispatch(actions.setCountOfPages(Math.floor(data.totalCount / 10) + 1));
+    };
+};
+let getMoreUsers = (): UsersThunkType => {
+    return async (dispatch, getState) => {
+        const { term, friend } = getState().UserPageData.filter;
+        const showedLastPage = getState().UserPageData.showedLastPage;
+        const countPageMayRecieved =
+            getState().UserPageData.countPageMayRecieved;
+        let data;
+        if (
+            showedLastPage < countPageMayRecieved &&
+            countPageMayRecieved !== 0 &&
+            countPageMayRecieved !== 1
+        ) {
+            dispatch(actions.showMoreUsers(showedLastPage + 1));
+            data = await usersAPI.getUsers(term, friend, showedLastPage);
+            dispatch(actions.setUsers(data.items, false, true));
+        }
     };
 };
 let followUnfollowToggle = async (
@@ -71,12 +89,17 @@ let resetFind = (): UsersThunkType => {
 };
 
 export const actions = {
-    showMoreUsers: (page: number) => ({ type: "SHOW_MORE_USERS", page } as const),
-    setCountOfPages: (count: number) => ({ type: "SET_COUNT_OF_PAGES", count } as const),
+    showMoreUsers: (page: number) =>
+        ({ type: "SHOW_MORE_USERS", page } as const),
+    setCountOfPages: (count: number) =>
+        ({ type: "SET_COUNT_OF_PAGES", count } as const),
     toggleFetching: (toggle: boolean) =>
         ({ type: "TOGGLE_IS_FETCHING", toggleFetching: toggle } as const),
-    setUsers: (users: Array<UserType>, reset: boolean = false, append: boolean = false) =>
-        ({ type: "SET_USERS", users, reset, append } as const),
+    setUsers: (
+        users: Array<UserType>,
+        reset: boolean = false,
+        append: boolean = false
+    ) => ({ type: "SET_USERS", users, reset, append } as const),
     addToList: (userId: number) => ({ type: "ADD_TO_LIST", userId } as const),
     removeFromList: (userId: number) =>
         ({ type: "REMOVE_FROM_LIST", userId } as const),
@@ -86,10 +109,8 @@ export const actions = {
             userId,
             isFetching,
         } as const),
-    setFilter: (
-        term: string | null,
-        friend: null | boolean = null
-    ) => ({ type: "SET_FILTER", filter: { term, friend } as const } as const),
+    setFilter: (term: string | null, friend: null | boolean = null) =>
+        ({ type: "SET_FILTER", filter: { term, friend } as const } as const),
 };
 
 let userReducer = (
@@ -117,7 +138,11 @@ let userReducer = (
             };
         }
         case "SET_USERS": {
-            if (state.UsersData.length === 0 && !action.reset && !action.append) {
+            if (
+                state.UsersData.length === 0 &&
+                !action.reset &&
+                !action.append
+            ) {
                 return {
                     ...state,
                     UsersData: [...state.UsersData, ...action.users],
@@ -130,8 +155,8 @@ let userReducer = (
             } else if (action.append) {
                 return {
                     ...state,
-                    UsersData: [...state.UsersData , ...action.users]
-                }
+                    UsersData: [...state.UsersData, ...action.users],
+                };
             } else {
                 return state;
             }
@@ -172,6 +197,7 @@ let userReducer = (
 export {
     userReducer,
     getUsersThunkCreator,
+    getMoreUsers,
     follow,
     unfollow,
     resetFind,

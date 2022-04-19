@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
     getUsersThunkCreator,
+    getMoreUsers,
     follow,
     unfollow,
     actions,
@@ -15,7 +16,6 @@ import {
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { useHistory } from "react-router-dom";
 import { FriendFormType } from "./UsersSearchForm";
-import { AppStateType } from "../../redux/redux-store";
 
 type OwnPropsType = {
     PageTitle?: string;
@@ -27,9 +27,6 @@ const FindUsersPage: React.FC<OwnPropsType> = (props) => {
 
     const filter = useSelector(selectFilter);
     let isFetching = useSelector(getIsFetching);
-    let showedLastPage = useSelector(
-        (state: AppStateType) => state.UserPageData.showedLastPage
-    );
 
     const internalSetFilter = useCallback(
         (term: string | null, friend: FriendFormType = null) => {
@@ -54,7 +51,7 @@ const FindUsersPage: React.FC<OwnPropsType> = (props) => {
         dispatch(unfollow(userId));
     };
     const internalShowMoreUsers = () => {
-        dispatch(actions.showMoreUsers(showedLastPage + 1));
+        dispatch(getMoreUsers());
     };
 
     useEffect(() => {
