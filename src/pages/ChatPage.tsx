@@ -108,6 +108,7 @@ const Message: React.FC<MessagePropsType> = React.memo(({ message }) => {
 });
 
 const AddMessageForm: React.FC = () => {
+    let ref = useRef<HTMLButtonElement>(null);
     const [message, setMessage] = useState("");
     const dispatch = useDispatch();
     const status = useSelector((state: AppStateType) => state.chat.status);
@@ -121,7 +122,11 @@ const AddMessageForm: React.FC = () => {
     };
 
     return (
-        <div>
+        <div onKeyPress={(e) => {
+            if(e.key === "Enter") {
+                ref.current?.click()
+            }
+        }}>
             <div>
                 <textarea
                     onChange={(e) => setMessage(e.currentTarget.value)}
@@ -135,6 +140,7 @@ const AddMessageForm: React.FC = () => {
             </div>
             <div>
                 <button
+                ref={ref}
                     disabled={status !== "ready"}
                     onClick={internalSendMessage}
                 >

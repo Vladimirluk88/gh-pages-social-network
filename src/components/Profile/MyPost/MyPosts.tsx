@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import styles from "./MyPosts.module.css";
 import Post from "./Posts/Post";
@@ -44,8 +44,13 @@ const MyPosts: React.FC<MapPropsType & DispatchPropsType> = React.memo(
 let MyPostsNewPost: React.FC<InjectedFormProps<FormProps, {}> & {}> = (
     props
 ) => {
+    let ref = useRef<HTMLFormElement>(null);
     return (
-        <form onSubmit={props.handleSubmit} className={styles.my_posts__input}>
+        <form  onKeyPress={(e) => {
+            if(e.key === "Enter") {
+                ref.current?.click()
+            }
+        }} onSubmit={props.handleSubmit} className={styles.my_posts__input}>
             <Field
                 validate={[requiredFiled, maxLength10]}
                 component={Textarea}

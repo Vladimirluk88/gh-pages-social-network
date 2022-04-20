@@ -4,7 +4,6 @@ import {
     UserOutlined,
     MessageOutlined,
     SearchOutlined,
-    SettingFilled,
 } from "@ant-design/icons";
 
 const Nav = () => {
@@ -21,9 +20,6 @@ const Nav = () => {
             </Menu.Item>
             <Menu.Item key="4" icon={<MessageOutlined />}>
                 <NavLink to="/chat">Chat</NavLink>
-            </Menu.Item>
-            <Menu.Item key="5" icon={<SettingFilled />}>
-                <NavLink to="/#">Settings</NavLink>
             </Menu.Item>
         </Menu>
     );

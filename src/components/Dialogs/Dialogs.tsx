@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Field, InjectedFormProps, reduxForm } from "redux-form";
 import { maxLength, requiredFiled } from "../../utils/validators/validators";
 import { Textarea } from "../common/FormsControls";
@@ -45,9 +45,14 @@ const Dialogs: React.FC<OwnPropsType> = (props) => {
 const AddMessageForm: React.FC<
     InjectedFormProps<NewMessageFormType, {}> & {}
 > = (props) => {
+    let ref = useRef<HTMLButtonElement>(null)
     return (
         <form onSubmit={props.handleSubmit}>
-            <div className={styles.dialogs_textarea}>
+            <div onKeyPress={(e) => {
+                            if(e.key === "Enter") {
+                                ref.current?.click()
+                            }
+                        }} className={styles.dialogs_textarea}>
                 <Field
                     validate={[requiredFiled, maxLength100]}
                     component={Textarea}
@@ -56,7 +61,7 @@ const AddMessageForm: React.FC<
                 />
             </div>
             <div>
-                <button>Send</button>
+                <button ref={ref}>Send</button>
             </div>
         </form>
     );

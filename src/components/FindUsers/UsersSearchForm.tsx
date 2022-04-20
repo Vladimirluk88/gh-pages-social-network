@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./UserSearchForm.module.css";
 import { selectFilter } from "../../redux/selectors/users-selectors";
@@ -22,6 +22,7 @@ type SearchErrorsType = {
 
 export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
     ({ setFilter }) => {
+        let ref = useRef<HTMLButtonElement>(null)
         let [isUsersFromFind, showFindUsers] = useState(false);
         const filter = useSelector(selectFilter);
 
@@ -52,7 +53,6 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
             setSubmitting(false);
             showFindUsers(true);
         };
-
         return (
             <div>
                 <Formik
@@ -65,7 +65,11 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
                     onSubmit={submit}
                 >
                     {({ isSubmitting }) => (
-                        <Form className={styles.user_search_form}>
+                        <Form onKeyPress={(e) => {
+                            if(e.key === "Enter") {
+                                ref.current?.click()
+                            }
+                        }} className={styles.user_search_form}>
                             <Field type="search" name="search" />
                             <Field name="friend" as="select" value="undefined">
                                 <option value="null">All</option>
@@ -73,7 +77,7 @@ export const UserSearchForm: React.FC<UserSearchFormProps> = React.memo(
                                 <option value="false">Only unfollowed</option>
                             </Field>
                             <ErrorMessage name="error" />
-                            <Button htmlType="submit" disabled={isSubmitting}>
+                            <Button ref={ref} htmlType="submit" disabled={isSubmitting}>
                                 Find
                             </Button>
                         </Form>

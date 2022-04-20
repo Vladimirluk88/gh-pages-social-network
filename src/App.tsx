@@ -11,7 +11,7 @@ import { compose } from "redux";
 import { withRouter } from "react-router";
 import { Preloader } from "./components/common/preloader";
 import { AppStateType, store } from "./redux/redux-store";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { withSuspense } from "./hoc/withSuspense";
 import { Redirect } from "react-router-dom";
 const ChatPage = React.lazy(() => import("./pages/ChatPage"));
@@ -140,11 +140,11 @@ let AppContainer = compose<React.ComponentType>(
 
 let SamuraiJSApp: React.FC = () => {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Provider store={store}>
                 <AppContainer />
             </Provider>
-        </BrowserRouter>
+        </HashRouter>
     );
 };
 export default SamuraiJSApp;
