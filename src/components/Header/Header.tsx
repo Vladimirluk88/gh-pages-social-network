@@ -44,7 +44,7 @@ const HeaderComponent: React.FC<OwnPropsType> = ({ collapsed, toggle }) => {
                             {isAuth ? (
                                 <div>
                                     {login} -{" "}
-                                    <Button onClick={dispatch(logout)}>
+                                    <Button onClick={() => dispatch(logout())}>
                                         Logout
                                     </Button>
                                 </div>

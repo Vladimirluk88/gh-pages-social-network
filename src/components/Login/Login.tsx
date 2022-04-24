@@ -11,7 +11,7 @@ import {
     selectIsAuth,
 } from "../../redux/selectors/auth-selectors";
 
-const maxLength20 = maxLength(20);
+const maxLength25 = maxLength(25);
 const maxLength15 = maxLength(15);
 
 type LoginFormOwnProps = {
@@ -32,7 +32,7 @@ const LoginForm: React.FC<
             <div className="">
                 <div className="">
                     <Field
-                        validate={[requiredFiled, maxLength20]}
+                        validate={[requiredFiled, maxLength25]}
                         component={Input}
                         name={"email"}
                         type="text"
@@ -41,7 +41,7 @@ const LoginForm: React.FC<
                 </div>
                 <div className="">
                     <Field
-                        validate={[requiredFiled, maxLength20]}
+                        validate={[requiredFiled, maxLength25]}
                         component={Input}
                         name={"password"}
                         type="password"
@@ -114,6 +114,10 @@ const Login: React.FC = (props) => {
         <>
             <div className={styles.login_text}>
                 <h1>Login</h1>
+            </div>
+            <div>Для просмотра внутреннего функционала
+                <div>Логин: cehole2879@richdn.com</div>
+                <div>Пароль: s04jdai8182dsakd</div>
             </div>
             <LoginReduxForm onSubmit={OnSubmit} captchaUrl={captchaUrl} />
         </>

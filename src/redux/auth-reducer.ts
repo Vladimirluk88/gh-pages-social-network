@@ -32,6 +32,7 @@ let login =
         captcha: any
     ): AuthThunkType =>
     async (dispatch) => {
+        console.log(dispatch);
         let response = await authAPI.login(
             email,
             password,
@@ -56,6 +57,7 @@ let login =
 
 let logout = (): AuthThunkType => async (dispatch) => {
     let data = await authAPI.logout();
+    console.log(dispatch);
     if (data.resultCode === 0) {
         dispatch(actions.setUserData(null, null, null, false));
     }
